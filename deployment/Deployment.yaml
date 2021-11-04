@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http2-deployment
+  labels:
+    app: http2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http2
+  template:
+    metadata:
+      labels:
+        app: http2
+    spec:
+      containers:
+        - name: sprint-backend
+          image: ghcr.io/pascal-sochacki/http2:master
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "8443"
+            - name: HTTP2_ENABLE
+              value: "false"
+            - name: SSL_ENABLE
+              value: "false"
+            - name: KEYSTORE_PATH
+              value: "/etc/keystore.jks"
+            - name: KEYSTORE_TYPE
+              value: "JKS"
+            - name: KEYSTORE_PASSWORD
+              value: "password"
+          ports:
+            - containerPort: 8443
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8443
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8443
+          #volumeMounts:
+          #  - mountPath: /etc/keystore.jks
+          #    name: keystore
+          #    subPath: keystore.jks

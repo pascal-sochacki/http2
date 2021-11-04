@@ -1,4 +1,9 @@
 server:
   http2:
-    enabled: true
-  port: 8443
+    enabled: ${HTTP2_ENABLE:false}
+  port: ${PORT:8443}
+  ssl:
+    enabled: ${SSL_ENABLE:false}
+    keystore: ${KEYSTORE_PATH:}
+    keystore-password: ${KEYSTORE_PASSWORD:}
+    key-store-type: ${KEYSTORE_TYPE:}
