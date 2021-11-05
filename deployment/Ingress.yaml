@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http2
+  labels:
+    name: http2
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  rules:
+  - host: http2.codecamp-n.dev
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: http2
+            port:
+              number: 8443
+  tls:
+  - hosts:
+    - http2.codecamp-n.dev
+    secretName: http2-le
